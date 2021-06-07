@@ -60,11 +60,12 @@ module Libcouchbase
         end
 
 
-        def initialize(hosts: Defaults.host, bucket: Defaults.bucket, username: Defaults.username, password: Defaults.password, thread: nil, **opts)
+        def initialize(hosts: Defaults.host, bucket: Defaults.bucket, username: Defaults.username, password: Defaults.password, thread: nil, flush_enabled: false, **opts)
             # build host string http://docs.couchbase.com/sdk-api/couchbase-c-client-2.5.6/group__lcb-init.html
             hosts = Array(hosts).flatten.join(',')
             connstr = "couchbase://#{hosts}/#{bucket}"
             connstr = "#{connstr}?#{opts.map { |k, v| "#{k}=#{v}" }.join('&') }" unless opts.empty?
+            @flush_enabled = flush_enabled
 
             # It's good to know
             @bucket = bucket
